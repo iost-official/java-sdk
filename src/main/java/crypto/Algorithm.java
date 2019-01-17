@@ -14,4 +14,14 @@ public enum Algorithm {
         }
         return "";
     }
+
+    public byte toByte() {
+        switch (this) {
+            case Ed25519:
+                return 2;
+            case Secp256k1:
+                return 1;
+        }
+        return 0;
+    }
 }

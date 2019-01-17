@@ -17,6 +17,7 @@
 
 package crypto;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 
@@ -68,9 +69,9 @@ public class Base58 {
      *
      * @param input the base58-encoded string to decode
      * @return the decoded data bytes
-     * @throws AddressFormatException if the given string is not a valid base58 string
+     * @throws java.io.IOException if the given string is not a valid base58 string
      */
-    public static byte[] decode(String input) throws AddressFormatException {
+    public static byte[] decode(String input) throws IOException {
         if (input.length() == 0) {
             return new byte[0];
         }
@@ -80,7 +81,7 @@ public class Base58 {
             char c = input.charAt(i);
             int digit = c < 128 ? INDEXES[c] : -1;
             if (digit < 0) {
-                throw new AddressFormatException.InvalidCharacter(c, i);
+                throw new IOException("invalid char");
             }
             input58[i] = (byte) digit;
         }
@@ -106,7 +107,7 @@ public class Base58 {
         return Arrays.copyOfRange(decoded, outputStart - zeros, decoded.length);
     }
     
-    public static BigInteger decodeToBigInteger(String input) throws AddressFormatException {
+    public static BigInteger decodeToBigInteger(String input) throws IOException {
         return new BigInteger(1, decode(input));
     }
 
