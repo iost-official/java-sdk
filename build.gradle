@@ -1,5 +1,5 @@
 group 'io.iost'
-version '1.0-SNAPSHOT'
+version 'SDK2.2.0-r1'
 
 apply plugin: 'java'
 
@@ -20,5 +20,3 @@ dependencies {
     compile group: 'org.web3j', name: 'crypto', version: '3.0.1'
 
 }
-
-
