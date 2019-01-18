@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Transaction  {
+public class Transaction {
     public long gas_ratio, gas_limit, time = 0, expiration = 0, delay = 0;
     public List<Signature> signatures = new ArrayList<>();
     public List<Action> actions = new ArrayList<>();
@@ -79,6 +79,15 @@ public class Transaction  {
         return (new SHA3.Digest256()).digest(this.getPublishBytes());
     }
 
+
+    /**
+     * add approve of this transaction
+     * approve means how much this transaction can at most use your token
+     *
+     * @param type  - token name
+     * @param value - token value in String, or "unlimited"
+     * @return -
+     */
     public Transaction addApprove(String type, String value) {
 
         AmountLimit al = new AmountLimit();
@@ -89,6 +98,14 @@ public class Transaction  {
         return this;
     }
 
+    /**
+     * add action to transaction
+     *
+     * @param contract - contract id
+     * @param abi      - abi name
+     * @param data     - abi params
+     * @return -
+     */
     public Transaction addAction(String contract, String abi, Object... data) {
         Action act = new Action();
         act.contract = contract;
@@ -100,14 +117,26 @@ public class Transaction  {
         return this;
     }
 
+    /**
+     * add co-signer to this transaction, publisher should not added here
+     * @param s - signer@permission
+     * @return -
+     */
     public Transaction addSigner(String s) {
         this.signers.add(s);
         return this;
     }
 
+    /**
+     * set time, if you want send tx at some future time, use it.
+     * @param now - this transaction's sending time
+     * @param lifetime - expiration
+     * @param delay - delay time
+     * @return -
+     */
     public Transaction setTime(long now, long lifetime, long delay) {
         this.time = now;
-        this.expiration = now +lifetime;
+        this.expiration = now + lifetime;
         this.delay = delay;
         return this;
     }

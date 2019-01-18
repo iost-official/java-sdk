@@ -13,13 +13,23 @@ import java.security.NoSuchProviderException;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
 
+/**
+ * secp256k1 key pair
+ */
 public class Secp256k1 extends KeyPair {
     private ECKeyPair kp;
 
+    /**
+     * new key pair with given private key
+     * @param seckey - private key
+     */
     public Secp256k1(byte[] seckey)  {
         this.kp = ECKeyPair.create(seckey);
     }
 
+    /**
+     * new key pair with crypto-safe random key
+     */
     public Secp256k1() {
         try {
             kp = Keys.createEcKeyPair();
@@ -27,7 +37,6 @@ public class Secp256k1 extends KeyPair {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public Signature sign(byte[] info) {
@@ -45,7 +54,7 @@ public class Secp256k1 extends KeyPair {
     }
 
     @Override
-    public byte[] pubkey() {
+    byte[] pubkey() {
         ByteBuffer bb = ByteBuffer.allocate(33);
         bb.put((byte) 0x02);
         bb.put(Arrays.copyOf(this.kp.getPublicKey().toByteArray(), 32));
@@ -53,7 +62,7 @@ public class Secp256k1 extends KeyPair {
     }
 
     @Override
-    public byte[] seckey() {
+    byte[] seckey() {
         return this.kp.getPrivateKey().toByteArray();
     }
 

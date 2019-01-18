@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Client IOST RPC的接口
+ */
 public class Client {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -20,7 +23,11 @@ public class Client {
     private String host;
     private Gson gson;
 
-
+    /**
+     * new client
+     *
+     * @param url - IOST full node http port, often at port 30001，eg. http://localhost:30001/
+     */
     public Client(String url) {
         this.host = url;
         this.client = new OkHttpClient();
@@ -61,7 +68,7 @@ public class Client {
     /**
      * get blockchain info
      *
-     * @return -
+     * @return - chain info
      * @throws IOException -
      */
     public ChainInfo getChainInfo() throws IOException {
@@ -71,25 +78,25 @@ public class Client {
     }
 
     /**
-     * 通过Hash获取区块
+     * get block by block head hash
      *
      * @param hash     - hash in base58
-     * @param complete - 是否获取完整的block
+     * @param complete - is full block instead of block info
      * @return Block
      * @throws IOException -
      */
     public BlockResponse getBlockByHash(String hash, boolean complete) throws IOException {
-        String api = "getBlockByHash/" + hash + "/" + (complete?"true":"false");
+        String api = "getBlockByHash/" + hash + "/" + (complete ? "true" : "false");
         String json = this.get(api);
         return this.gson.fromJson(json, BlockResponse.class);
     }
 
 
     /**
-     * 通过区块高度获取区块
+     * get block by block number
      *
-     * @param num      - 区块高度
-     * @param complete - 是否获取完整的block
+     * @param num      - height of block
+     * @param complete - is full block instead of block info
      * @return {response}
      * @throws IOException -
      */
@@ -99,6 +106,8 @@ public class Client {
     }
 
     /**
+     * get current ram info
+     *
      * @return -
      * @throws IOException -
      */
@@ -108,25 +117,25 @@ public class Client {
 
 
     /**
-     * 获取某个用户的余额
+     * get balance of some token
      *
-     * @param account        -
-     * @param token          -
-     * @param byLongestChain -
-     * @return {balance}
-     * @throws IOException -
+     * @param account        - account
+     * @param token          - token name
+     * @param byLongestChain - is query in longest chain (instead of irreversible chain)
+     * @return - 余额
+     * @throws IOException - 网络错误
      */
-    public TokenBalance getBalance(String account, String token, String byLongestChain) throws IOException {
+    public TokenBalance getBalance(String account, String token, boolean byLongestChain) throws IOException {
         String api = "getTokenBalance/" + account + "/" + token + "/" + byLongestChain;
         return this.gson.fromJson(this.get(api), TokenBalance.class);
     }
 
     /**
-     * 获取某个用户的余额
+     * get balance of some token721
      *
-     * @param address         -
-     * @param tokenSymbol     -
-     * @param useLongestChain -
+     * @param address         - account
+     * @param tokenSymbol     - token name
+     * @param useLongestChain - is query in longest chain (instead of irreversible chain)
      * @return {json String}
      * @throws IOException -
      */
@@ -136,12 +145,12 @@ public class Client {
     }
 
     /**
-     * 获取某个token721类型token的 metadata
+     * get metadata of token721
      *
-     * @param tokenSymbol     -
-     * @param tokenID         -
-     * @param useLongestChain -
-     * @return {json String}
+     * @param tokenSymbol     - account
+     * @param tokenID         - token name
+     * @param useLongestChain - is query in longest chain (instead of irreversible chain)
+     * @return - metadata
      * @throws IOException -
      */
     public String getToken721Metadata(String tokenSymbol, String tokenID, boolean useLongestChain) throws IOException {
@@ -153,12 +162,12 @@ public class Client {
     }
 
     /**
-     * 获取某个token721类型token的 owner
+     * get owner of token721
      *
-     * @param tokenSymbol     -
-     * @param tokenID         -
-     * @param useLongestChain -
-     * @return {json String}
+     * @param tokenSymbol     - account
+     * @param tokenID         - token name
+     * @param useLongestChain - is query in longest chain (instead of irreversible chain)
+     * @return - owner
      * @throws IOException -
      */
     public String getToken721Owner(String tokenSymbol, String tokenID, boolean useLongestChain) throws IOException {
@@ -170,31 +179,32 @@ public class Client {
     }
 
     /**
-     * 获取智能合约
+     * get smart contract
      *
-     * @param id - 智能合约的ID
-     * @return {response}
+     * @param id             - contract id
+     * @param byLongestChain - is query in longest chain (instead of irreversible chain)
+     * @return - code of contract
      * @throws IOException -
      */
-    public String getContract(String id, String byLongestChain) throws IOException {
+    public String getContract(String id, boolean byLongestChain) throws IOException {
         String api = "getContract/" + id + "/" + byLongestChain;
         return this.get(api);
     }
 
     /**
-     * * 获取智能合约下的某个键值
+     * get smart contract states
      *
-     * @param contractID - 智能合约ID
-     * @param key        - 需查询的key
-     * @param field      - 需查询的field
-     * @param pending    - 是否从最长链上查询
-     * @return {String}
+     * @param contractID     - contract id
+     * @param key            - key
+     * @param field          - field (set to null if it's not a map)
+     * @param byLongestChain - is query in longest chain (instead of irreversible chain)
+     * @return - value to string
      * @throws IOException -
      */
-    public String getContractStorage(String contractID, String key, String field, boolean pending) throws IOException {
+    public String getContractStorage(String contractID, String key, String field, boolean byLongestChain) throws IOException {
 
         HashMap<String, Object> json = new HashMap<>();
-        json.put("by_longest_chain", pending);
+        json.put("by_longest_chain", byLongestChain);
         json.put("field", field);
         json.put("key", key);
         json.put("id", contractID);
@@ -204,12 +214,12 @@ public class Client {
 
 
     /**
-     * 获取智能合约下的fields集合
+     * get smart contract keys of map
      *
-     * @param contractID - 智能合约ID
-     * @param fields     - 需查询的key
-     * @param pending    - 是否从最长链上查询
-     * @return {json String}
+     * @param contractID - contract id
+     * @param fields     - key
+     * @param pending    - is query in longest chain (instead of irreversible chain)
+     * @return key的集合，是一个json array
      * @throws IOException -
      */
     public String getContractStorageFields(String contractID, String fields, boolean pending) throws IOException {
@@ -223,10 +233,10 @@ public class Client {
 
 
     /**
-     * 获�?�account信�?�
+     * 获取account的信息
      *
-     * @param name         - 用户�??
-     * @param by_longest_chain - 是�?�从�?�逆链上查询
+     * @param name             - account name
+     * @param by_longest_chain - is query in longest chain (instead of irreversible chain)
      * @return {response}
      * @throws IOException -
      */
@@ -237,9 +247,9 @@ public class Client {
     }
 
     /**
-     * 获取当前Gas费率
+     * get current gas ratio
      *
-     * @return {promise}
+     * @return - gas ratio
      * @throws IOException -
      */
     public GasRatio getGasRatio() throws IOException {
@@ -248,9 +258,10 @@ public class Client {
     }
 
     /**
-     * 获取预估的gas消耗
+     * get gas usage this acton will cost
      *
-     * @return -
+     * @param actionName - your action name
+     * @return - gas usage
      */
     public long getGasUsage(String actionName) {
         switch (actionName) {
@@ -264,11 +275,11 @@ public class Client {
 
 
     /**
-     * Send a transactionObject
+     * sent transaction
      *
-     * @param tx transactionObject tobe sent
-     * @return transactionObject hash
-     * @throws IOException      throw while send failed
+     * @param tx - transaction
+     * @return - transaction hash
+     * @throws IOException -
      */
     public String sendTx(Transaction tx) throws IOException {
         String api = "sendTx";
@@ -278,10 +289,10 @@ public class Client {
     }
 
     /**
-     * find transactionObject by transactionObject hash
+     * find tx by tx hash
      *
-     * @param hash - transactionObject hash
-     * @return transactionObject in json
+     * @param hash - transaction hash
+     * @return transaction in json
      * @throws IOException while net error
      */
     public Transaction getTxByHash(String hash) throws IOException { // todo return a transaction object
@@ -291,10 +302,10 @@ public class Client {
     }
 
     /**
-     * 通过交易哈希查询交易结果
+     * get TxReceipt by transaction hash
      *
-     * @param txHash - base58编�?的hash
-     * @return {promise}
+     * @param txHash - Tx hash in Base58
+     * @return tx receipt
      * @throws IOException -
      */
     public TxReceipt getTxReceiptByTxHash(String txHash) throws IOException {
@@ -303,6 +314,16 @@ public class Client {
         return this.gson.fromJson(s, TxReceipt.class);
     }
 
+
+    /**
+     * polling transaction receipt
+     *
+     * @param hash             - tx hash
+     * @param intervalInMillis -
+     * @param times            -
+     * @return - TxReceipt
+     * @throws TimeoutException -
+     */
     public TxReceipt polling(String hash, long intervalInMillis, int times) throws TimeoutException {
         TxReceipt receipt;
         for (int i = 0; i < times; i++) {

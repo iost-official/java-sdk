@@ -1,5 +1,8 @@
 package crypto;
 
+/**
+ * crypto algorithm of IOST
+ */
 public enum Algorithm {
     Secp256k1,
     Ed25519;
