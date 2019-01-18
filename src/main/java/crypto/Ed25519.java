@@ -16,7 +16,7 @@ public class Ed25519 extends KeyPair {
 
     }
 
-    public Ed25519(byte[] seckey) throws InvalidKeySpecException {
+    public Ed25519(byte[] seckey){
         this.privateKey = seckey;
         this.publicKey = Arrays.copyOfRange(seckey, seckey.length/2, seckey.length);
 

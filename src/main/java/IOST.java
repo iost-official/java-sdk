@@ -21,7 +21,7 @@ public class IOST {
         this.expiration = 90000000000L;
     }
 
-    public Transaction callAbi(String cid, String abi, Object... data) {
+    public Transaction callABI(String cid, String abi, Object... data) {
         Transaction tx = new Transaction();
         tx.time = new Date().getTime() * 1000000;
         tx.expiration = tx.time + this.expiration * 1000000;
@@ -33,7 +33,7 @@ public class IOST {
     }
 
     public Transaction transfer(String token, String from, String to, double amount, String memo) {
-        Transaction tx = this.callAbi("token.iost", "transfer", token, from, to, String.valueOf(amount), memo);
+        Transaction tx = this.callABI("token.iost", "transfer", token, from, to, String.valueOf(amount), memo);
         tx.addApprove("iost", String.valueOf(amount));
 
         return tx;
@@ -41,7 +41,7 @@ public class IOST {
 
     public Transaction newAccount(String name, String creator, String ownerkey, String activekey, long initialRAM,
                                   double initialGasPledge) {
-        Transaction t = this.callAbi("auth.iost", "signUp", name, ownerkey, activekey);
+        Transaction t = this.callABI("auth.iost", "signUp", name, ownerkey, activekey);
         t.addAction("ram.iost", "buy", creator, name, initialRAM);
         t.addAction("gas.iost", "pledge",  creator, name, String.valueOf(initialGasPledge));
         t.addApprove("IOST", "unlimited");

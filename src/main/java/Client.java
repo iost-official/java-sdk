@@ -304,7 +304,7 @@ public class Client {
         return this.gson.fromJson(s, TxReceipt.class);
     }
 
-    public TxReceipt Polling(String hash, long intervalInMillis, int times) throws TimeoutException {
+    public TxReceipt polling(String hash, long intervalInMillis, int times) throws TimeoutException {
         TxReceipt receipt;
         for (int i = 0; i < times; i++) {
             try {

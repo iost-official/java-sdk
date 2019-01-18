@@ -25,7 +25,11 @@ public class Keychain {
         tx.signatures.add(kp.sign(buf));
     }
 
-    public void AddKey(String perm, KeyPair kp) {
+    public void addKey(String perm, KeyPair kp) {
         this.keys.put(perm, kp);
+    }
+
+    public KeyPair getKey(String perm) {
+        return this.keys.get(perm);
     }
 }
