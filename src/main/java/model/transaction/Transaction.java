@@ -66,7 +66,7 @@ public class Transaction  {
         se.buffer.putInt(this.signatures.size());
         for (Signature sign : this.signatures) {
             SimpleEncoder c2 = new SimpleEncoder(1024);
-            c2.buffer.put(sign.algorithm);
+            c2.buffer.put(sign.algorithm.toByte());
             c2.putBytes((sign.signature));
             c2.putBytes((sign.public_key));
             se.putBytes(c2.toBytes());
@@ -91,8 +91,8 @@ public class Transaction  {
 
     public Transaction addAction(String contract, String abi, Object... data) {
         Action act = new Action();
-        act.contract = "cont";
-        act.action_name = "abi";
+        act.contract = contract;
+        act.action_name = abi;
         JsonArray ja = new JsonArray();
         Gson gson = new Gson();
         act.data = gson.toJson(data);

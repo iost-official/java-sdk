@@ -1,6 +1,8 @@
 package model.transaction;
 
+import crypto.Algorithm;
+
 public class Signature {
-    public byte algorithm;
+    public Algorithm algorithm;
     public byte[] public_key,signature;
 }

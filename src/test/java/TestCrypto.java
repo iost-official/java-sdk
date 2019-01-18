@@ -1,7 +1,11 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import crypto.Base58;
 import crypto.Ed25519;
+import crypto.KeyPair;
 import crypto.Secp256k1;
 import model.transaction.Signature;
+import model.transaction.SignatureAdapter;
 import model.transaction.Transaction;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
@@ -15,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestCrypto {
     @Test
-    public void testKeySpec() throws IOException {
+    public void testSecp() throws IOException {
 
         byte[] seckey = Base58.decode("EhNiaU4DzUmjCrvynV3gaUeuj2VjB1v2DCmbGD5U2nSE");
         Secp256k1 s = new Secp256k1(seckey);
@@ -26,6 +30,9 @@ public class TestCrypto {
         Signature signature = s.sign(info);
         assertEquals("37f7731bdb9988aa330be8bbd6a791f11d9fe90601edf7f569f6b8ddcfdd7755333b299ca3a8437e71eb14c72a02a2c5cdf3562e891f5a3c1d54d92148236e10",
                 Hex.toHexString(signature.signature));
+
+        KeyPair s2 = new Secp256k1();
+        System.out.println(s2.B58PubKey());
     }
 
     @Test
@@ -41,7 +48,8 @@ public class TestCrypto {
         assertEquals("eb436f1af8502d454f8bcea472bac4015f7827d7f90427ce22787f14bf98b83d2c2b4d1b303ad4201b1526a1a269f069dcbf2887a636799b8e733acd2fd75308",
                 Hex.toHexString(signature.signature));
 
-
+        KeyPair s2 = new Ed25519();
+        System.out.println(s2.B58SecKey());
     }
 
     @Test
@@ -73,8 +81,9 @@ public class TestCrypto {
                 Hex.toHexString(tx.getPublishBytes()));
         assertEquals("1990bf1492c2f9d0ae57c5350a4fe9517ee6889808e534f81f2b28549ebe81fb", Hex.toHexString(tx.getPublishHash()));
 
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(Signature.class, new SignatureAdapter());
 
-
-
+        System.out.println(gb.create().toJson(tx));
     }
 }

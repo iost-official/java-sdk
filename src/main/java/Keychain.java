@@ -22,7 +22,8 @@ public class Keychain {
     public void publish(Transaction tx) {
         byte[] buf = tx.getPublishHash();
         KeyPair kp = this.keys.get("active");
-        tx.signatures.add(kp.sign(buf));
+        tx.publisher_sigs.add(kp.sign(buf));
+        tx.publisher = this.account;
     }
 
     public void addKey(String perm, KeyPair kp) {

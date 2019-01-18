@@ -13,13 +13,14 @@ public class Ed25519 extends KeyPair {
     private byte[] publicKey;
 
     public Ed25519() {
-
+        publicKey = new byte[TweetNaCl.SIGN_PUBLIC_KEY_BYTES];
+        privateKey = new byte[TweetNaCl.SIGN_SECRET_KEY_BYTES];
+        TweetNaCl.crypto_sign_keypair(publicKey, privateKey, false);
     }
 
     public Ed25519(byte[] seckey){
         this.privateKey = seckey;
         this.publicKey = Arrays.copyOfRange(seckey, seckey.length/2, seckey.length);
-
     }
 
     @Override
@@ -28,7 +29,7 @@ public class Ed25519 extends KeyPair {
 
         Signature signature = new Signature();
         signature.signature = sig;
-        signature.algorithm = Algorithm.Ed25519.toByte();
+        signature.algorithm = Algorithm.Ed25519;
         signature.public_key = this.pubkey();
 
         return signature;

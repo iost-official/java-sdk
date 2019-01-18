@@ -3,6 +3,7 @@ package crypto;
 import org.web3j.crypto.ECDSASignature;
 import org.web3j.crypto.ECKeyPair;
 import model.transaction.Signature;
+import org.web3j.crypto.Keys;
 
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
@@ -21,12 +22,7 @@ public class Secp256k1 extends KeyPair {
 
     public Secp256k1() {
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECDSA", "BC");
-            ECGenParameterSpec ecsp;
-            ecsp = new ECGenParameterSpec(Algorithm.Secp256k1.toString());
-            kpg.initialize(ecsp);
-
-            kp = ECKeyPair.create(kpg.generateKeyPair());
+            kp = Keys.createEcKeyPair();
         } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
             e.printStackTrace();
         }
@@ -44,7 +40,7 @@ public class Secp256k1 extends KeyPair {
         Signature signature = new Signature();
         signature.signature = bb.array();
         signature.public_key = this.pubkey();
-        signature.algorithm = Algorithm.Secp256k1.toByte();
+        signature.algorithm = Algorithm.Secp256k1;
         return signature;
     }
 

@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.account.*;
 import model.block.*;
 import model.info.*;
@@ -23,14 +24,16 @@ public class Client {
     public Client(String url) {
         this.host = url;
         this.client = new OkHttpClient();
-        this.gson = new Gson();
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(Signature.class, new SignatureAdapter());
+        this.gson = gb.create();
     }
 
     private String post(String url, Object json) throws IOException {
         RequestBody body = RequestBody.create(TXT_PLAIN, this.gson.toJson(json));
         Request request = new Request.Builder().url(host + url).header("Connection", "close").post(body).build();
         Response response = client.newCall(request).execute();
-        if (response.code() != 200) throw new IOException(response.toString());
+        if (response.code() != 200) throw new IOException(response.body().string());
         return response.body().string();
     }
 
@@ -38,7 +41,7 @@ public class Client {
         this.client = new OkHttpClient();
         Request request = new Request.Builder().url(host + url).build();
         Response response = client.newCall(request).execute();
-        if (response.code() != 200) throw new IOException(response.toString());
+        if (response.code() != 200) throw new IOException(response.body().string());
         return response.body().string();
     }
 
@@ -195,9 +198,8 @@ public class Client {
         json.put("field", field);
         json.put("key", key);
         json.put("id", contractID);
-        String query = this.gson.toJson(json);
         String api = "getContractStorage";
-        return this.post(api, query);
+        return this.post(api, json);
     }
 
 
@@ -215,9 +217,8 @@ public class Client {
         json.put("by_longest_chain", pending);
         json.put("fields", fields);
         json.put("id", contractID);
-        String query = this.gson.toJson(json);
         String api = "getContractStorageFields";
-        return this.post(api, query);
+        return this.post(api, json);
     }
 
 
@@ -270,10 +271,8 @@ public class Client {
      * @throws IOException      throw while send failed
      */
     public String sendTx(Transaction tx) throws IOException {
-        Gson gson = new Gson();
         String api = "sendTx";
-        String query = gson.toJson(tx);
-        String jsonHash = this.post(api, query);
+        String jsonHash = this.post(api, tx);
         Map m = gson.fromJson(jsonHash, Map.class);
         return (String) m.get("hash");
     }
