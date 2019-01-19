@@ -12,4 +12,5 @@ public class Account {
 	public Map<String, Permission> permissions;
 	public Map<String, Group> groups;
 	public FrozenBalance[] frozen_balances;
+	public VoteInfo[] vote_infos;
 }
