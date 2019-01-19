@@ -54,7 +54,7 @@ public class Secp256k1 extends KeyPair {
     }
 
     @Override
-    byte[] pubkey() {
+    public byte[] pubkey() {
         ByteBuffer bb = ByteBuffer.allocate(33);
         bb.put((byte) 0x02);
         bb.put(Arrays.copyOf(this.kp.getPublicKey().toByteArray(), 32));
@@ -62,7 +62,7 @@ public class Secp256k1 extends KeyPair {
     }
 
     @Override
-    byte[] seckey() {
+    public byte[] seckey() {
         return this.kp.getPrivateKey().toByteArray();
     }
 

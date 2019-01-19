@@ -45,7 +45,7 @@ public abstract class KeyPair {
      * @return - Signature
      */
     abstract public Signature sign(byte[] info);
-    abstract byte[] pubkey();
-    abstract byte[] seckey();
+    abstract public byte[] pubkey();
+    abstract public byte[] seckey();
 }
 

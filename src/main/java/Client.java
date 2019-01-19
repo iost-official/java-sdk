@@ -216,15 +216,15 @@ public class Client {
     /**
      * get smart contract keys of map
      *
-     * @param contractID - contract id
-     * @param fields     - key
-     * @param pending    - is query in longest chain (instead of irreversible chain)
+     * @param contractID       - contract id
+     * @param fields           - key
+     * @param by_longest_chain - is query in longest chain (instead of irreversible chain)
      * @return key的集合，是一个json array
      * @throws IOException -
      */
-    public String getContractStorageFields(String contractID, String fields, boolean pending) throws IOException {
+    public String getContractStorageFields(String contractID, String fields, boolean by_longest_chain) throws IOException {
         HashMap<String, Object> json = new HashMap<>();
-        json.put("by_longest_chain", pending);
+        json.put("by_longest_chain", by_longest_chain);
         json.put("fields", fields);
         json.put("id", contractID);
         String api = "getContractStorageFields";
@@ -240,7 +240,7 @@ public class Client {
      * @return {response}
      * @throws IOException -
      */
-    public Account getAccountInfo(String name, String by_longest_chain) throws IOException {
+    public Account getAccountInfo(String name, boolean by_longest_chain) throws IOException {
         String api = "getAccount/" + name + "/" + by_longest_chain;
         String s = this.get(api);
         return this.gson.fromJson(s, Account.class);

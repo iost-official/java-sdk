@@ -47,12 +47,12 @@ public class Ed25519 extends KeyPair {
     }
 
     @Override
-    byte[] pubkey() {
+    public byte[] pubkey() {
         return this.publicKey;
     }
 
     @Override
-    byte[] seckey() {
+    public byte[] seckey() {
         return this.privateKey;
     }
 }
