@@ -19,6 +19,7 @@ public class Transaction {
     public List<AmountLimit> amount_limit = new ArrayList<>();
     public String publisher;
     public int chain_id = 1024;
+    public byte[] reserved = {};
 
     public byte[] signBytes() {
         SimpleEncoder se = new SimpleEncoder(65536);
@@ -28,6 +29,11 @@ public class Transaction {
         se.buffer.putLong(this.gas_limit * 100);
         se.buffer.putLong(this.delay);
         se.buffer.putInt(this.chain_id);
+
+        se.buffer.putInt(this.reserved.length);
+        for (byte b : this.reserved) {
+            se.buffer.put(b);
+        }
 
         se.buffer.putInt(this.signers.size());
         for (String signer : this.signers) {

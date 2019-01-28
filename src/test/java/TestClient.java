@@ -16,9 +16,6 @@ public class TestClient {
     private Client client = new Client("http://47.244.109.92:30001/");
     private Gson gson = new Gson();
 
-    private byte[] privateKey;
-    private Keychain account;
-
     @Test
     public void testGetNodeInfo() {
         try {
@@ -41,6 +38,7 @@ public class TestClient {
         }
     }
 
+    @Test
     public void testGetBlockByHash() {
         try {
 
@@ -53,23 +51,20 @@ public class TestClient {
         }
     }
 
+    @Test
     public void testTransfer() throws IOException, TimeoutException {
         try {
             IOST iost = new IOST();
             Transaction tx = iost.transfer("iost", "admin", "admin", 10.00, ""); //将 10.00 个 iost 从 admin 转账给 receiver
 
-            try {
-                this.privateKey = Base58.decode("2yquS3ySrGWPEKywCPzX4RTJugqRh7kJSo5aehsLYPEWkUxBWA39oMrZ7ZxuM4fgyXYs2cPwh5n8aNNpH5x2VyK1");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            byte[] privateKey = Base58.decode("2yquS3ySrGWPEKywCPzX4RTJugqRh7kJSo5aehsLYPEWkUxBWA39oMrZ7ZxuM4fgyXYs2cPwh5n8aNNpH5x2VyK1");
 
-            this.account = new Keychain("admin");
+            Keychain account = new Keychain("admin");
             KeyPair kp = new Ed25519(privateKey);
             account.addKey("owner", kp);
             account.addKey("active", kp);
 
-            this.account.publish(tx);
+            account.publish(tx);
 
             String txHash = this.client.sendTx(tx);
             TxReceipt receipt = this.client.polling(txHash, 1000, 90);
