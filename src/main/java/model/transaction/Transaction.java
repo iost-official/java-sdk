@@ -2,6 +2,7 @@ package model.transaction;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import crypto.Base58;
 import crypto.SimpleEncoder;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
+    public String hash = "";
     public long gas_ratio, gas_limit, time = 0, expiration = 0, delay = 0;
     public List<Signature> signatures = new ArrayList<>();
     public List<Action> actions = new ArrayList<>();
@@ -20,6 +22,7 @@ public class Transaction {
     public String publisher;
     public int chain_id = 1024;
     public byte[] reserved = {};
+    public String referred_tx = "";
 
     public byte[] signBytes() {
         SimpleEncoder se = new SimpleEncoder(65536);
@@ -79,6 +82,26 @@ public class Transaction {
         }
         return se.toBytes();
 
+    }
+
+    public String getHash() {
+        if (!this.hash.equals("")) return this.hash;
+
+        SimpleEncoder se = new SimpleEncoder(this.getPublishBytes());
+        se.buffer.putInt(0); // referred_tx
+        System.out.println("publisher:" +this.publisher);
+        se.putString(this.publisher);
+
+        se.buffer.putInt(this.publisher_sigs.size());
+        for (Signature sign : this.publisher_sigs) {
+            SimpleEncoder c2 = new SimpleEncoder(1024);
+            c2.buffer.put(sign.algorithm.toByte());
+            c2.putBytes((sign.signature));
+            c2.putBytes((sign.public_key));
+            se.putBytes(c2.toBytes());
+        }
+        this.hash = Base58.encode((new SHA3.Digest256()).digest(se.toBytes()));
+        return this.hash;
     }
 
     public byte[] getPublishHash() {

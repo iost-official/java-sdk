@@ -288,6 +288,11 @@ public class Client {
         return (String) m.get("hash");
     }
 
+    class wrappedTx {
+        String status;
+        Transaction transaction;
+    }
+
     /**
      * find tx by tx hash
      *
@@ -296,9 +301,11 @@ public class Client {
      * @throws IOException while net error
      */
     public Transaction getTxByHash(String hash) throws IOException { // todo return a transaction object
+
         String api = "getTxByHash/" + hash;
         String s = this.get(api);
-        return this.gson.fromJson(s, Transaction.class);
+        wrappedTx wtx = this.gson.fromJson(s, wrappedTx.class);
+        return wtx.transaction;
     }
 
     /**

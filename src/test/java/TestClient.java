@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class TestClient {
-    private Client client = new Client("http://47.244.109.92:30001/");
+    private Client client = new Client("http://localhost:30001/");
     private Gson gson = new Gson();
 
     @Test
@@ -67,6 +67,10 @@ public class TestClient {
             account.publish(tx);
 
             String txHash = this.client.sendTx(tx);
+
+            if (!txHash.equals(tx.getHash())) {
+                System.out.println("tx hash error, should be: " + txHash +", actual: "+ tx.getHash());
+            }
             TxReceipt receipt = this.client.polling(txHash, 1000, 90);
             if (receipt.status_code.equals("SUCCESS")) {
                 System.out.println("tx success : gas usage " + receipt.gas_usage);
@@ -74,6 +78,12 @@ public class TestClient {
                 System.out.println("tx failed :");
                 System.out.println(receipt.message);
             }
+
+            Transaction tx2 = this.client.getTxByHash(txHash);
+            if (!tx2.getHash().equals(tx.getHash())) {
+                System.out.println("tx2 hash error, should be: " + tx2.getHash() +", actual: "+ tx.getHash());
+            }
+
         } catch (IOException | TimeoutException e) {
             System.out.println("network error:");
             e.printStackTrace();

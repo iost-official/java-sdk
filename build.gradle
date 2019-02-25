@@ -1,5 +1,5 @@
 group 'io.iost'
-version 'SDK2.3.*-r1'
+version 'SDK3.0.*-r1'
 
 apply plugin: 'java'
 
