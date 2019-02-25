@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
-    public String hash = "";
+    private String hash = "";
     public long gas_ratio, gas_limit, time = 0, expiration = 0, delay = 0;
     public List<Signature> signatures = new ArrayList<>();
     public List<Action> actions = new ArrayList<>();
