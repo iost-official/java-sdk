@@ -1,12 +1,15 @@
 import com.google.gson.Gson;
-import crypto.Base58;
-import crypto.Ed25519;
-import crypto.KeyPair;
-import model.block.BlockResponse;
-import model.info.ChainInfo;
-import model.info.NodeInfo;
-import model.transaction.Transaction;
-import model.transaction.TxReceipt;
+import iost.Client;
+import iost.IOST;
+import iost.Keychain;
+import iost.crypto.Base58;
+import iost.crypto.Ed25519;
+import iost.crypto.KeyPair;
+import iost.model.block.BlockResponse;
+import iost.model.info.ChainInfo;
+import iost.model.info.NodeInfo;
+import iost.model.transaction.Transaction;
+import iost.model.transaction.TxReceipt;
 import org.junit.Test;
 
 import java.io.IOException;

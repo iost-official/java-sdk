@@ -1,11 +1,12 @@
 import com.google.gson.GsonBuilder;
-import crypto.Base58;
-import crypto.Ed25519;
-import crypto.KeyPair;
-import crypto.Secp256k1;
-import model.transaction.Signature;
-import model.transaction.SignatureAdapter;
-import model.transaction.Transaction;
+import iost.Keychain;
+import iost.crypto.Base58;
+import iost.crypto.Ed25519;
+import iost.crypto.KeyPair;
+import iost.crypto.Secp256k1;
+import iost.model.transaction.Signature;
+import iost.model.transaction.SignatureAdapter;
+import iost.model.transaction.Transaction;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
@@ -68,17 +69,17 @@ public class TestCrypto {
 
         tx.addApprove("iost", "123");
 
-        assertEquals("156d700a27e12ac0156d701f1c4c2ec00000000000000064000000000001e2080000000000000000000000000000000100000003616263000000010000001500000004636f6e7400000003616269000000025b5d000000010000000f00000004696f737400000003313233",
+        assertEquals("156d700a27e12ac0156d701f1c4c2ec00000000000000064000000000001e208000000000000000000000000000000000000000100000003616263000000010000001500000004636f6e7400000003616269000000025b5d000000010000000f00000004696f737400000003313233",
                 Hex.toHexString(tx.signBytes()));
 
-        assertEquals("5b75a2e0a5e7c8c462604d90df60893e9714702bd5c0dd1448dd017ed4aa0bc4", Hex.toHexString(tx.getSignHash()));
+        assertEquals("95e01835fb9901c26716d73884cc96342dfb2d68e48fb165e95edf6618228e4d", Hex.toHexString(tx.getSignHash()));
 
         Keychain kc = new Keychain("abc");
         kc.addKey("def", new Ed25519(Base58.decode("1rANSfcRzr4HkhbUFZ7L1Zp69JZZHiDDq5v7dNSbbEqeU4jxy3fszV4HGiaLQEyqVpS1dKT9g7zCVRxBVzuiUzB")));
         kc.sign(tx, "def");
-        assertEquals("156d700a27e12ac0156d701f1c4c2ec00000000000000064000000000001e2080000000000000000000000000000000100000003616263000000010000001500000004636f6e7400000003616269000000025b5d000000010000000f00000004696f73740000000331323300000001000000690200000040b41b996ea0a47c0a14dd5d6e473828dea4966bc1d8823205b7af6b6ca19626f46c1e86957a6fa2510bb1bf42125368c4add823bcba9c56eb888b5cd23f544203000000205731adeb5d1a807ec9c43825389e5edff70412e4643a94629a652af1bfcf2f08",
+        assertEquals("156d700a27e12ac0156d701f1c4c2ec00000000000000064000000000001e208000000000000000000000000000000000000000100000003616263000000010000001500000004636f6e7400000003616269000000025b5d000000010000000f00000004696f73740000000331323300000001000000690200000040fe0eb96448bbb1d3cb34a6d4e8780af98586836cba05549ffd25cb66f14e911b6f5f82479fd5d4e5c9217c6a296037bd03ed17ef3972299db80dd6bd0e989d0c000000205731adeb5d1a807ec9c43825389e5edff70412e4643a94629a652af1bfcf2f08",
                 Hex.toHexString(tx.getPublishBytes()));
-        assertEquals("1990bf1492c2f9d0ae57c5350a4fe9517ee6889808e534f81f2b28549ebe81fb", Hex.toHexString(tx.getPublishHash()));
+        assertEquals("26f1dbd162f9275a9266c9f20d6578a9e607e3ff6315ad2721f89de2f0b16c83", Hex.toHexString(tx.getPublishHash()));
 
         GsonBuilder gb = new GsonBuilder();
         gb.registerTypeAdapter(Signature.class, new SignatureAdapter());
