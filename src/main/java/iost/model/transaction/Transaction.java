@@ -5,9 +5,7 @@ import com.google.gson.JsonArray;
 import iost.crypto.Base58;
 import iost.crypto.SimpleEncoder;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
-import org.bouncycastle.util.encoders.Hex;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
