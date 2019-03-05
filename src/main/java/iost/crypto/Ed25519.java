@@ -25,8 +25,14 @@ public class Ed25519 extends KeyPair {
      * @param seckey - private key
      */
     public Ed25519(byte[] seckey){
-        this.privateKey = seckey;
-        this.publicKey = Arrays.copyOfRange(seckey, seckey.length/2, seckey.length);
+        int l = 32;
+        if (seckey.length < 32) {
+            l = seckey.length;
+        }
+        publicKey = new byte[TweetNaCl.SIGN_PUBLIC_KEY_BYTES];
+        privateKey = new byte[TweetNaCl.SIGN_SECRET_KEY_BYTES];
+        System.arraycopy(seckey, 0, privateKey, 0, l);
+        TweetNaCl.crypto_sign_keypair(publicKey, privateKey, true);
     }
 
 

@@ -1,9 +1,6 @@
 import com.google.gson.GsonBuilder;
 import iost.Keychain;
-import iost.crypto.Base58;
-import iost.crypto.Ed25519;
-import iost.crypto.KeyPair;
-import iost.crypto.Secp256k1;
+import iost.crypto.*;
 import iost.model.transaction.Signature;
 import iost.model.transaction.SignatureAdapter;
 import iost.model.transaction.Transaction;
@@ -50,13 +47,7 @@ public class TestCrypto {
 
         KeyPair s2 = new Ed25519();
         System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
-        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+
     }
 
     @Test
