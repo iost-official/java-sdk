@@ -49,7 +49,14 @@ public class TestCrypto {
                 Hex.toHexString(signature.signature));
 
         KeyPair s2 = new Ed25519();
-        System.out.println(s2.B58SecKey());
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
+        System.out.println("\"" + (new Ed25519()).B58SecKey()+ "\",");
     }
 
     @Test

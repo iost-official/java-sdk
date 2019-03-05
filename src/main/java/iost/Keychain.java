@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 钥匙链
+ * keyChain
  */
 public class Keychain {
     private String account;

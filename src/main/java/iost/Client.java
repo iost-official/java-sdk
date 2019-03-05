@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Client IOST RPC的接口
+ * Client IOST RPC interface
  */
 public class Client {
 
@@ -124,8 +124,8 @@ public class Client {
      * @param account        - account
      * @param token          - token name
      * @param byLongestChain - is query in longest chain (instead of irreversible chain)
-     * @return - 余额
-     * @throws IOException - 网络错误
+     * @return - balance
+     * @throws IOException - net error
      */
     public TokenBalance getBalance(String account, String token, boolean byLongestChain) throws IOException {
         String api = "getTokenBalance/" + account + "/" + token + "/" + byLongestChain;
@@ -221,7 +221,7 @@ public class Client {
      * @param contractID       - contract id
      * @param fields           - key
      * @param by_longest_chain - is query in longest chain (instead of irreversible chain)
-     * @return key的集合，是一个json array
+     * @return keys in json array
      * @throws IOException -
      */
     public String getContractStorageFields(String contractID, String fields, boolean by_longest_chain) throws IOException {
@@ -235,7 +235,7 @@ public class Client {
 
 
     /**
-     * 获取account的信息
+     * get account info
      *
      * @param name             - account name
      * @param by_longest_chain - is query in longest chain (instead of irreversible chain)
