@@ -72,7 +72,7 @@ public class TestClient {
             String txHash = this.client.sendTx(tx);
 
             if (!txHash.equals(tx.getHash())) {
-                System.out.println("tx hash error, should be: " + txHash +", actual: "+ tx.getHash());
+                System.out.println("tx hash error, should be: " + txHash + ", actual: " + tx.getHash());
             }
             TxReceipt receipt = this.client.polling(txHash, 1000, 90);
             if (receipt.status_code.equals("SUCCESS")) {
@@ -84,12 +84,20 @@ public class TestClient {
 
             Transaction tx2 = this.client.getTxByHash(txHash);
             if (!tx2.getHash().equals(tx.getHash())) {
-                System.out.println("tx2 hash error, should be: " + tx2.getHash() +", actual: "+ tx.getHash());
+                System.out.println("tx2 hash error, should be: " + tx2.getHash() + ", actual: " + tx.getHash());
             }
 
         } catch (IOException | TimeoutException e) {
             System.out.println("network error:");
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void debugTransfer() {
+        IOST iost = new IOST();
+        Transaction tx = iost.transfer("iost", "admin", "admin", 1000000000.00, ""); //将 10.00 个 iost 从 admin 转账给 receiver
+
+        System.out.println(tx.actions.get(0).data);
     }
 }

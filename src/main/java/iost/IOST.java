@@ -2,6 +2,7 @@ package iost;
 
 import iost.model.transaction.Transaction;
 
+import java.text.NumberFormat;
 import java.util.Date;
 
 public class IOST {
@@ -51,6 +52,15 @@ public class IOST {
         return tx;
     }
 
+    private static String double2Str(Double d) {
+        if (d == null) {
+            return "";
+        }
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setGroupingUsed(false);
+        return (nf.format(d));
+    }
+
     /**
      * @param token  -
      * @param from   -
@@ -60,8 +70,8 @@ public class IOST {
      * @return -
      */
     public Transaction transfer(String token, String from, String to, double amount, String memo) {
-        Transaction tx = this.callABI("token.iost", "transfer", token, from, to, String.valueOf(amount), memo);
-        tx.addApprove("iost", String.valueOf(amount));
+        Transaction tx = this.callABI("token.iost", "transfer", token, from, to, double2Str(amount), memo);
+        tx.addApprove("iost", double2Str(amount));
 
         return tx;
     }
