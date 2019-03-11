@@ -13,6 +13,7 @@ import iost.model.transaction.TxReceipt;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.concurrent.TimeoutException;
 
 public class TestClient {
@@ -58,7 +59,7 @@ public class TestClient {
     public void testTransfer() throws IOException, TimeoutException {
         try {
             IOST iost = new IOST();
-            Transaction tx = iost.transfer("iost", "admin", "admin", 10.00, ""); //将 10.00 个 iost 从 admin 转账给 receiver
+            Transaction tx = iost.transfer("iost", "admin", "admin", new BigDecimal("10.00"), ""); //将 10.00 个 iost 从 admin 转账给 receiver
 
             byte[] privateKey = Base58.decode("2yquS3ySrGWPEKywCPzX4RTJugqRh7kJSo5aehsLYPEWkUxBWA39oMrZ7ZxuM4fgyXYs2cPwh5n8aNNpH5x2VyK1");
 
@@ -96,7 +97,7 @@ public class TestClient {
     @Test
     public void debugTransfer() {
         IOST iost = new IOST();
-        Transaction tx = iost.transfer("iost", "admin", "admin", 1000000000.00, ""); //将 10.00 个 iost 从 admin 转账给 receiver
+        Transaction tx = iost.transfer("iost", "admin", "admin", new BigDecimal("1000000000.00"), ""); //将 10.00 个 iost 从 admin 转账给 receiver
 
         System.out.println(tx.actions.get(0).data);
     }
