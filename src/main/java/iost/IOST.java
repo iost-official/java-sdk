@@ -1,7 +1,9 @@
 package iost;
 
+import iost.crypto.Base58;
 import iost.model.transaction.Transaction;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -78,12 +80,27 @@ public class IOST {
      * @return -
      */
     public Transaction newAccount(String name, String creator, String ownerkey, String activekey, long initialRAM,
-                                  double initialGasPledge) {
+                                  double initialGasPledge) throws IOException {
+        if (!this.checkPubkey(ownerkey) || !this.checkPubkey(activekey))
+            throw new IOException("illegal public key");
         Transaction t = this.callABI("auth.iost", "signUp", name, ownerkey, activekey);
         t.addAction("ram.iost", "buy", creator, name, initialRAM);
         t.addAction("gas.iost", "pledge", creator, name, String.valueOf(initialGasPledge));
         t.addApprove("iost", "unlimited");
         return t;
+    }
+
+    private boolean checkPubkey(String key) {
+        try {
+            byte[] k = Base58.decode(key);
+            if (k.length != 32) {
+                return false;
+            }
+
+        } catch (IOException e) {
+            return false;
+        }
+
     }
 
 }
