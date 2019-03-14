@@ -101,4 +101,15 @@ public class TestClient {
 
         System.out.println(tx.actions.get(0).data);
     }
+
+    @Test
+    public void debugNewAccount() {
+        IOST iost = new IOST();
+        try {
+            Transaction tx = iost.newAccount("test", "admin", "ahaha", "ahaha", 0, 0);
+        } catch (IOException e) {
+            System.out.println("OK");
+        }
+
+    }
 }

@@ -84,4 +84,19 @@ public class TestCrypto {
 
         System.out.println(gb.create().toJson(tx));
     }
+
+    @Test
+    public void testDebug() throws IOException {
+        byte[] pubkey = Base58.decode("sy8zB6MSWiyMFL7HjSsEbWN4VYwF8MfYhSqm1F8FkivWdK7y7NpW3FZP");
+        System.out.println(pubkey.length);
+
+        byte[] sec = Base58.decode("xprv9s21ZrQH143K2e7hhj5LZAeEFyREr3oaHMbKJ7dDUothtr8WbzejQmk417DbDYUDgonRsrUEGdKR4sGuFzEK4zdAmnBQ4Kb1Cgsiwk5pqXB");
+        System.out.println(sec.length);
+
+        KeyPair kp = new Ed25519(sec);
+        System.out.println(kp.B58PubKey());
+        System.out.println(kp.getID());
+        System.out.println(kp.B58SecKey());
+    }
+
 }

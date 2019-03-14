@@ -96,11 +96,11 @@ public class IOST {
             if (k.length != 32) {
                 return false;
             }
+            return true;
 
         } catch (IOException e) {
             return false;
         }
-
     }
 
 }
