@@ -85,7 +85,7 @@ public class IOST {
             throw new IOException("illegal public key");
         Transaction t = this.callABI("auth.iost", "signUp", name, ownerkey, activekey);
         t.addAction("ram.iost", "buy", creator, name, initialRAM);
-        t.addAction("gas.iost", "pledge", creator, name, String.valueOf(initialGasPledge));
+        t.addAction("gas.iost", "pledge", creator, name, String.format ("%.4f", initialGasPledge));
         t.addApprove("iost", "unlimited");
         return t;
     }
