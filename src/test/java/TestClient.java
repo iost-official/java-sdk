@@ -25,6 +25,7 @@ public class TestClient {
         try {
             NodeInfo ni = client.getNodeInfo();
             System.out.println(gson.toJson(ni));
+            System.out.println(client.getNow());
         } catch (IOException e) {
             System.out.println("network error");
             e.printStackTrace();
