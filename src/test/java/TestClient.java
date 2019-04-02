@@ -25,6 +25,7 @@ public class TestClient {
         try {
             NodeInfo ni = client.getNodeInfo();
             System.out.println(gson.toJson(ni));
+            System.out.println(client.getNow());
         } catch (IOException e) {
             System.out.println("network error");
             e.printStackTrace();
@@ -59,7 +60,7 @@ public class TestClient {
     public void testTransfer() throws IOException, TimeoutException {
         try {
             IOST iost = new IOST();
-            Transaction tx = iost.transfer("iost", "admin", "admin", new BigDecimal("10.00"), ""); //将 10.00 个 iost 从 admin 转账给 receiver
+            Transaction tx = iost.transfer("iost", "admin", "abcdef", new BigDecimal("10.00"), "今天天气好"); //将 10.00 个 iost 从 admin 转账给 receiver
 
             byte[] privateKey = Base58.decode("2yquS3ySrGWPEKywCPzX4RTJugqRh7kJSo5aehsLYPEWkUxBWA39oMrZ7ZxuM4fgyXYs2cPwh5n8aNNpH5x2VyK1");
 

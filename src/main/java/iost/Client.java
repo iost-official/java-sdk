@@ -9,6 +9,7 @@ import iost.model.transaction.*;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -350,6 +351,14 @@ public class Client {
 
         throw new TimeoutException();
 
+    }
+
+    /**
+     * get current time of server
+     * @return current time of server
+     */
+    public long getNow() throws IOException {
+        return new Long(getNodeInfo().server_time);
     }
 
 

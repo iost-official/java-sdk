@@ -7,5 +7,6 @@ public class NodeInfo {
     public String git_hash;
     public String mode;
     public NetworkInfo network;
+    public String server_time;
 
 }

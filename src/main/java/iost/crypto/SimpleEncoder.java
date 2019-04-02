@@ -15,8 +15,10 @@ public class SimpleEncoder {
     }
 
     public SimpleEncoder putString(String s) {
-        this.buffer.putInt(s.length());
-        this.buffer.put(s.getBytes());
+        byte [] buf = s.getBytes();
+
+        this.buffer.putInt(buf.length);
+        this.buffer.put(buf);
         return this;
     }
 
