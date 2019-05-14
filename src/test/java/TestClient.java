@@ -47,11 +47,23 @@ public class TestClient {
     public void testGetBlockByHash() {
         try {
 
-            BlockResponse br = client.getBlockByHash("CgK2PpohVgU3FcNwnopa8ps9NEMBUmBuVKYHuhEe7wBo", true);
+            BlockResponse br = client.getBlockByHash("2ygoSVMD3FXLEchKb7mu5HMFXeucW9u9iS6Ygy6Dz9qT", true);
             System.out.println(br.status);
             System.out.println(gson.toJson(br.block));
         } catch (IOException e) {
             System.out.println("network error");
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetBlockByNumber() {
+        try {
+            BlockResponse br = client.getBlockByNumber("2", true);
+            System.out.println(br.status);
+            System.out.println(gson.toJson(br.block));
+        } catch (IOException e) {
+            System.out.println("network err");
             e.printStackTrace();
         }
     }
