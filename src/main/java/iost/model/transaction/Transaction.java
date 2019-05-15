@@ -17,6 +17,7 @@ public class Transaction {
     public List<Signature> publisher_sigs = new ArrayList<>();
     public List<String> signers = new ArrayList<>();
     public List<AmountLimit> amount_limit = new ArrayList<>();
+    public TxReceipt tx_receipt;
     public String publisher;
     public int chain_id = 1024;
     public byte[] reserved = {};
@@ -87,7 +88,7 @@ public class Transaction {
 
         SimpleEncoder se = new SimpleEncoder(this.getPublishBytes());
         se.buffer.putInt(0); // referred_tx
-        System.out.println("publisher:" +this.publisher);
+        System.out.println("publisher:" + this.publisher);
         se.putString(this.publisher);
 
         se.buffer.putInt(this.publisher_sigs.size());
@@ -146,6 +147,7 @@ public class Transaction {
 
     /**
      * add co-signer to this transaction, publisher should not added here
+     *
      * @param s - signer@permission
      * @return -
      */
@@ -156,9 +158,10 @@ public class Transaction {
 
     /**
      * set time, if you want send tx at some future time, use it.
-     * @param now - this transaction's sending time
+     *
+     * @param now      - this transaction's sending time
      * @param lifetime - expiration
-     * @param delay - delay time
+     * @param delay    - delay time
      * @return -
      */
     public Transaction setTime(long now, long lifetime, long delay) {
