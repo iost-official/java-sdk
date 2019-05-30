@@ -11,15 +11,15 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
-    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.60'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.61'
 
     // https://mvnrepository.com/artifact/org.web3j/crypto
-    compile group: 'org.web3j', name: 'crypto', version: '3.0.1'
+    implementation group: 'org.web3j', name: 'crypto', version: '3.0.1'
     
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
 
 }
