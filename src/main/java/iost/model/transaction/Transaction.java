@@ -11,7 +11,9 @@ import java.util.List;
 
 public class Transaction {
     private String hash = "";
-    public long gas_ratio, gas_limit, time = 0, expiration = 0, delay = 0;
+
+    public transient long gas_limit = 0;
+    public long gas_ratio, time = 0, expiration = 0, delay = 0;
     public List<Signature> signatures = new ArrayList<>();
     public List<Action> actions = new ArrayList<>();
     public List<Signature> publisher_sigs = new ArrayList<>();
