@@ -12,7 +12,7 @@ import java.util.List;
 public class Transaction {
     private String hash = "";
 
-    public transient long gas_limit = 0;
+    public float gas_limit = 0;
     public long gas_ratio, time = 0, expiration = 0, delay = 0;
     public List<Signature> signatures = new ArrayList<>();
     public List<Action> actions = new ArrayList<>();
@@ -30,7 +30,8 @@ public class Transaction {
         se.buffer.putLong(this.time);
         se.buffer.putLong(this.expiration);
         se.buffer.putLong(this.gas_ratio * 100);
-        se.buffer.putLong(this.gas_limit * 100);
+        long floorGasLimit = (long) this.gas_limit;
+        se.buffer.putLong(floorGasLimit * 100);
         se.buffer.putLong(this.delay);
         se.buffer.putInt(this.chain_id);
 
