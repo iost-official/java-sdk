@@ -83,8 +83,12 @@ public class IOST {
         if (!this.checkPubkey(ownerkey) || !this.checkPubkey(activekey))
             throw new IOException("illegal public key");
         Transaction t = this.callABI("auth.iost", "signUp", name, ownerkey, activekey);
-        t.addAction("ram.iost", "buy", creator, name, initialRAM);
-        t.addAction("gas.iost", "pledge", creator, name, String.format ("%.4f", initialGasPledge));
+        if (initialRAM > 0) {
+            t.addAction("ram.iost", "buy", creator, name, initialRAM);
+        }
+        if (initialGasPledge > 0) {
+            t.addAction("gas.iost", "pledge", creator, name, String.format ("%.4f", initialGasPledge));
+        }
         t.addApprove("iost", "unlimited");
         return t;
     }
