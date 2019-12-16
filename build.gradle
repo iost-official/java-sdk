@@ -1,5 +1,5 @@
 group 'io.iost'
-version '3.0.8'
+version '3.1.0'
 
 apply plugin: 'java'
 

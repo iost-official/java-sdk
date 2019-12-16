@@ -5,7 +5,7 @@
 
     <groupId>io.github.qyvlik</groupId>
     <artifactId>io.iost-java-sdk</artifactId>
-    <version>broker-v3.0.8</version>
+    <version>broker-v3.1.0</version>
     <name>io.iost-java-sdk</name>
     <description>iost.io java-sdk</description>
     <url>https://github.com/qyvlik/io.iost-java-sdk</url>
