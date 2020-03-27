@@ -68,31 +68,17 @@ public class Secp256k1 extends KeyPair {
     }
 
     /**
+     * verify Secp256k1 signature
+     *
      * @param info      info
      * @param signature signature
      * @return verify result
      */
     @Override
     public boolean verify(byte[] info, byte[] signature) {
-        // ref: https://github.com/web3j/web3j/blob/v3.6.0/crypto/src/test/java/org/web3j/crypto/ECRecoverTest.java
-
-        byte[] r = Arrays.copyOfRange(signature, 0, 32);
-        byte[] s = Arrays.copyOfRange(signature, 32, 64);
-        ECDSASignature ecdsaSignature = new ECDSASignature(new BigInteger(r), new BigInteger(s));
-
-        // don't use the Secp256k1::pubkey to get the pubKeyInteger
-        // because the Secp256k1::pubkey only return part data.
-        BigInteger fullPubKeyInteger = Sign.publicKeyFromPrivate(new BigInteger(seckey()));
-
-        boolean match = false;
-        // Iterate for each possible key to recover
-        for (int i = 0; i < 4; i++) {
-            BigInteger recoverPublicKey = Sign.recoverFromSignature(i, ecdsaSignature, info);
-            if (recoverPublicKey != null && fullPubKeyInteger.compareTo(recoverPublicKey) == 0) {
-                match = true;
-                break;
-            }
-        }
-        return match;
+        assert seckey() != null;
+        // note: the Secp256k1::pubkey return part data, check full pubkey maybe necessary
+        byte[] pubKey = Sign.publicKeyFromPrivate(new BigInteger(seckey())).toByteArray();
+        return VerifyUtils.Secp256k1Verify(info, signature, pubKey);
     }
 }

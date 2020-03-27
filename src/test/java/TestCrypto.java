@@ -69,6 +69,22 @@ public class TestCrypto {
     }
 
     @Test
+    public void testEd25519Verify() throws InvalidKeySpecException, IOException {
+        byte[] seckey = Base58.decode("1rANSfcRzr4HkhbUFZ7L1Zp69JZZHiDDq5v7dNSbbEqeU4jxy3fszV4HGiaLQEyqVpS1dKT9g7zCVRxBVzuiUzB");
+
+        Ed25519 e = new Ed25519(seckey);
+        assertEquals("5731adeb5d1a807ec9c43825389e5edff70412e4643a94629a652af1bfcf2f08", Hex.toHexString(e.pubkey()));
+
+        byte[] info = (new SHA3.Digest256()).digest("hello".getBytes());
+        assertEquals("3338be694f50c5f338814986cdf0686453a888b84f424d792af4b9202398f392", Hex.toHexString(info));
+        Signature signature = e.sign(info);
+        assertEquals("eb436f1af8502d454f8bcea472bac4015f7827d7f90427ce22787f14bf98b83d2c2b4d1b303ad4201b1526a1a269f069dcbf2887a636799b8e733acd2fd75308",
+                Hex.toHexString(signature.signature));
+        assertTrue(e.verify(info, signature.signature));
+
+    }
+
+    @Test
     public void testSHA3_256() {
         byte[] info = (new SHA3.Digest256()).digest("hello".getBytes());
         assertEquals("3338be694f50c5f338814986cdf0686453a888b84f424d792af4b9202398f392", Hex.toHexString(info));
