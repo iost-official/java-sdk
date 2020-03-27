@@ -2,8 +2,6 @@ package iost.crypto;
 
 import iost.model.transaction.Signature;
 
-import java.util.Arrays;
-
 /**
  * Ed25519 key pair
  */
@@ -22,9 +20,10 @@ public class Ed25519 extends KeyPair {
 
     /**
      * new key pair with given private key
+     *
      * @param seckey - private key
      */
-    public Ed25519(byte[] seckey){
+    public Ed25519(byte[] seckey) {
         int l = 32;
         if (seckey.length < 32) {
             l = seckey.length;
@@ -38,7 +37,7 @@ public class Ed25519 extends KeyPair {
 
     @Override
     public Signature sign(byte[] info) {
-        byte[]sig = TweetNaCl.crypto_sign(info, this.privateKey);
+        byte[] sig = TweetNaCl.crypto_sign(info, this.privateKey);
 
         Signature signature = new Signature();
         signature.signature = sig;
@@ -56,5 +55,10 @@ public class Ed25519 extends KeyPair {
     @Override
     public byte[] seckey() {
         return this.privateKey;
+    }
+
+    @Override
+    public boolean verify(byte[] info, byte[] signature) {
+        return VerifyUtils.Ed25519Verify(info, signature, pubkey());
     }
 }

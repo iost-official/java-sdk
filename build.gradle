@@ -1,5 +1,5 @@
 group 'io.iost'
-version '3.0.8'
+version '3.1.0'
 
 apply plugin: 'java'
 
@@ -17,5 +17,5 @@ dependencies {
     compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.60'
 
     // https://mvnrepository.com/artifact/org.web3j/crypto
-    compile group: 'org.web3j', name: 'crypto', version: '3.0.1'
+    compile group: 'org.web3j', name: 'crypto', version: '3.6.0'
 }

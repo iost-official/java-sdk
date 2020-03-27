@@ -1,10 +1,12 @@
 package iost.crypto;
 
+import iost.model.transaction.Signature;
 import org.web3j.crypto.ECDSASignature;
 import org.web3j.crypto.ECKeyPair;
-import iost.model.transaction.Signature;
 import org.web3j.crypto.Keys;
+import org.web3j.crypto.Sign;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -19,9 +21,10 @@ public class Secp256k1 extends KeyPair {
 
     /**
      * new key pair with given private key
+     *
      * @param seckey - private key
      */
-    public Secp256k1(byte[] seckey)  {
+    public Secp256k1(byte[] seckey) {
         this.kp = ECKeyPair.create(seckey);
     }
 
@@ -64,4 +67,18 @@ public class Secp256k1 extends KeyPair {
         return this.kp.getPrivateKey().toByteArray();
     }
 
+    /**
+     * verify Secp256k1 signature
+     *
+     * @param info      info
+     * @param signature signature
+     * @return verify result
+     */
+    @Override
+    public boolean verify(byte[] info, byte[] signature) {
+        assert seckey() != null;
+        // note: the Secp256k1::pubkey return part data, check full pubkey maybe necessary
+        byte[] pubKey = Sign.publicKeyFromPrivate(new BigInteger(seckey())).toByteArray();
+        return VerifyUtils.Secp256k1Verify(info, signature, pubKey);
+    }
 }

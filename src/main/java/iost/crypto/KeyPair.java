@@ -45,5 +45,6 @@ public abstract class KeyPair {
     abstract public Signature sign(byte[] info);
     abstract public byte[] pubkey();
     abstract public byte[] seckey();
+    abstract public boolean verify(byte[] info, byte[] signature);
 }
 
