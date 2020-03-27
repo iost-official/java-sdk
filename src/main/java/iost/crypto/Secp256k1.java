@@ -1,10 +1,12 @@
 package iost.crypto;
 
+import iost.model.transaction.Signature;
 import org.web3j.crypto.ECDSASignature;
 import org.web3j.crypto.ECKeyPair;
-import iost.model.transaction.Signature;
 import org.web3j.crypto.Keys;
+import org.web3j.crypto.Sign;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -19,9 +21,10 @@ public class Secp256k1 extends KeyPair {
 
     /**
      * new key pair with given private key
+     *
      * @param seckey - private key
      */
-    public Secp256k1(byte[] seckey)  {
+    public Secp256k1(byte[] seckey) {
         this.kp = ECKeyPair.create(seckey);
     }
 
@@ -64,4 +67,32 @@ public class Secp256k1 extends KeyPair {
         return this.kp.getPrivateKey().toByteArray();
     }
 
+    /**
+     * @param info      info
+     * @param signature signature
+     * @return verify result
+     */
+    @Override
+    public boolean verify(byte[] info, byte[] signature) {
+        // ref: https://github.com/web3j/web3j/blob/v3.6.0/crypto/src/test/java/org/web3j/crypto/ECRecoverTest.java
+
+        byte[] r = Arrays.copyOfRange(signature, 0, 32);
+        byte[] s = Arrays.copyOfRange(signature, 32, 64);
+        ECDSASignature ecdsaSignature = new ECDSASignature(new BigInteger(r), new BigInteger(s));
+
+        // don't use the Secp256k1::pubkey to get the pubKeyInteger
+        // because the Secp256k1::pubkey only return part data.
+        BigInteger fullPubKeyInteger = Sign.publicKeyFromPrivate(new BigInteger(seckey()));
+
+        boolean match = false;
+        // Iterate for each possible key to recover
+        for (int i = 0; i < 4; i++) {
+            BigInteger recoverPublicKey = Sign.recoverFromSignature(i, ecdsaSignature, info);
+            if (recoverPublicKey != null && fullPubKeyInteger.compareTo(recoverPublicKey) == 0) {
+                match = true;
+                break;
+            }
+        }
+        return match;
+    }
 }

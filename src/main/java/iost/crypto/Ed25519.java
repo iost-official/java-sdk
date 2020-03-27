@@ -57,4 +57,9 @@ public class Ed25519 extends KeyPair {
     public byte[] seckey() {
         return this.privateKey;
     }
+
+    @Override
+    public boolean verify(byte[] hash, byte[] signature) {
+        throw new RuntimeException("not implement yet");
+    }
 }
