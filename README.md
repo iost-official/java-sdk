@@ -24,6 +24,6 @@ ls build/docs/javadoc
 <dependency>
     <groupId>io.github.qyvlik</groupId>
     <artifactId>io.iost-java-sdk</artifactId>
-    <version>broker-v3.1.0</version>
+    <version>broker-v3.1.1</version>
 </dependency>
 ```
