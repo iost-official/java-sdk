@@ -46,8 +46,16 @@ public class VerifyUtils {
                 throw new RuntimeException("Secp256k1Verify failure : pubKey is invalidate");
             }
             publicKey = Arrays.copyOfRange(pubKey, 1, 33);
-        } else if (pubKey.length == 32 || pubKey.length == 64) {
+        } else if (pubKey.length == 65) {
+            // todo what is pubKey[0]?
+            // if (pubKey[0] != (byte) 0x02) {
+            //    throw new RuntimeException("Secp256k1Verify failure : pubKey is invalidate");
+            // }
+            publicKey = Arrays.copyOfRange(pubKey, 1, 64);
+        } else if (pubKey.length == 32) {
             publicKey = Arrays.copyOfRange(pubKey, 0, 32);
+        } else if (pubKey.length == 64) {
+            publicKey = Arrays.copyOfRange(pubKey, 0, 64);
         } else {
             throw new RuntimeException("Secp256k1Verify failure : pubKey length is invalidate");
         }
@@ -56,7 +64,6 @@ public class VerifyUtils {
         // Iterate for each possible key to recover
         for (int i = 0; i < 4; i++) {
             BigInteger recoverPublicKey = Sign.recoverFromSignature(i, ecdsaSignature, info);
-
             if (recoverPublicKey != null) {
                 byte[] recoverPubKey = Arrays.copyOfRange(
                         recoverPublicKey.toByteArray(), 0, publicKey.length);
