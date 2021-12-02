@@ -1,7 +1,6 @@
 package iost;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import iost.model.account.*;
 import iost.model.block.*;
 import iost.model.info.*;
@@ -10,6 +9,7 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.Date;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -36,6 +36,7 @@ public class Client {
         this.client = new OkHttpClient();
         GsonBuilder gb = new GsonBuilder();
         gb.registerTypeAdapter(Signature.class, new SignatureAdapter());
+        gb.registerTypeAdapter(BigDecimal.class, (JsonSerializer<BigDecimal>) (src, typeOfSrc, context) -> new JsonPrimitive(src.toPlainString()));
         this.gson = gb.create();
     }
 
