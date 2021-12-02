@@ -63,8 +63,8 @@ public class IOST {
      * @return -
      */
     public Transaction transfer(String token, String from, String to, BigDecimal amount, String memo) {
-        Transaction tx = this.callABI("token.iost", "transfer", token, from, to, amount.toString(), memo);
-        tx.addApprove(token, amount.toString());
+        Transaction tx = this.callABI("token.iost", "transfer", token, from, to, amount.stripTrailingZeros().toPlainString(), memo);
+        tx.addApprove(token, amount.stripTrailingZeros().toPlainString());
 
         return tx;
     }
